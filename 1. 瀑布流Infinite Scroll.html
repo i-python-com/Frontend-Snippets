@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+      .container {
+        margin: 0 auto;
+        max-width: 50em;
+        padding: 1em;
+      }
+
+      .container .element-list {
+        overflow: hidden;
+      }
+
+      .container .element-list__item {
+        background-color: #eee;
+        float: left;
+        height: 15em;
+        max-width: 50%;
+        opacity: 0.75;
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        transition: opacity 0.2s, -webkit-transform 0.2s;
+        transition: opacity 0.2s, transform 0.2s;
+        transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s;
+        width: 15em;
+      }
+      .element-list__item:hover {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+
+      .element-list__item__image {
+        display: block;
+        height: auto;
+        margin: 0;
+        opacity: 1;
+        transition: opacity 0.2s;
+        width: 100%;
+      }
+
+      .element-list__item__image--loading {
+        opacity: 0;
+      }
+    </style>
+    <title>Infinite Scroll</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Infinite Scroll</h1>
+      <div class="element-list"></div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/main.js"></script>
+    <script>
+      function getScrollTop() {
+        // scrollTop will change, use function to get current value
+        return document.documentElement.scrollTop || document.body.scrollTop
+      }
+
+      function getDocumentHeight() {
+        // scrollHeight will change, use function to get current value
+        return (
+          document.documentElement.scrollHeight || document.body.scrollHeight
+        )
+      }
+
+      function getClientHeight() {
+        // clientHeight will change, use function to get current value
+        return (
+          document.documentElement.clientHeight || document.body.clientHeight
+        )
+      }
+
+      function generateImageSourceUrl() {
+        const hash = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+        return `http://api.adorable.io/avatars/250/${hash}`
+      }
+
+      function getElementImage() {
+        const cssImageClass = 'element-list__item__image'
+        const cssImageLoadingClass = `${cssImageClass}--loading` // set opacity:0
+
+        const image = new Image()
+        image.className = `${cssImageClass} ${cssImageLoadingClass}`
+        image.src = generateImageSourceUrl()
+        image.onload = function() {
+          // actually no need this one
+          // after images loaded, execuate function, after 1s, remove opacity:0 class
+          setTimeout(() => image.classList.remove(cssImageLoadingClass), 1000)
+        }
+
+        return image
+      }
+
+      function getElement() {
+        const elementImage = getElementImage()
+        const element = document.createElement('div')
+        element.className = 'element-list__item'
+        element.appendChild(elementImage)
+        return element
+      }
+
+      function loadNextBatch(batchSize = 9) {
+        while (batchSize--) {
+          const element = getElement()
+          elementList.appendChild(element)
+        }
+      }
+
+      const elementList = document.querySelector('.element-list')
+
+      // Load the first batch of elements
+      loadNextBatch()
+
+      // if scrollTop < documentHeight - displayHeight, return
+      // Load more batches when scorlling to the end
+      window.onscroll = function() {
+        if (getScrollTop() < getDocumentHeight() - getClientHeight()) {
+          console.log(
+            'not load',
+            getScrollTop(),
+            getDocumentHeight() - getClientHeight()
+          )
+          return
+        }
+        console.log(
+          'load',
+          getScrollTop(),
+          getDocumentHeight() - getClientHeight()
+        )
+        loadNextBatch()
+      }
+    </script>
+  </body>
+</html>
