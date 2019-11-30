@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .dot {
+      position: fixed;
+      z-index: 1000;
+      width: 40px;
+      height: 200px;
+      right: 30px;
+      top: 50%;
+    }
+
+    .dot ul li {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgb(132, 132, 173);
+      margin: 20px auto;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .dot ul li .liBg {
+      position: absolute;
+      border-radius: 50%;
+      top: -4px;
+      left: -4px;
+      width: 24px;
+      height: 24px;
+      transition: all 1s;
+      z-index: 200;
+      background: rgba(134, 134, 201, 0.555);
+      display: none;
+    }
+
+    #box {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    .box1,
+    .box2,
+    .box3,
+    .box4 {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      transition: all 1s;
+      text-align: center;
+    }
+
+    .box1 {
+      background: #114b5f;
+      top: 0;
+    }
+
+    .box2 {
+      background: #028090;
+      top: 100%;
+    }
+
+    .box3 {
+      background: #e4fde1;
+      top: 200%;
+    }
+
+    .box4 {
+      background: #456990;
+      top: 300%;
+    }
+  </style>
+
+  <body>
+    <div class="dot">
+      <ul>
+        <li>
+          <div class="liBg"></div>
+        </li>
+        <li>
+          <div class="liBg"></div>
+        </li>
+        <li>
+          <div class="liBg"></div>
+        </li>
+        <li>
+          <div class="liBg"></div>
+        </li>
+      </ul>
+    </div>
+    <div id="box">
+      <div class="box1"></div>
+      <div class="box2"></div>
+      <div class="box3"></div>
+      <div class="box4"></div>
+    </div>
+  </body>
+  <script>
+    let box = document.getElementById('box'),
+      boxChild = box.children, //获取子节点
+      libg = document.getElementsByClassName('liBg')
+    libg[0].style.display = 'block'
+    let list = document.querySelectorAll('.dot li')
+    let childLength = boxChild.length
+    let index = 0,
+      timer,
+      Delta,
+      e,
+      flag = true
+    const BOX_CHANGE_TIME = 1000 //页面动画的过渡时间
+    if (window.addEventListener)
+      //FF,火狐浏览器会识别该方法
+      window.addEventListener('DOMMouseScroll', slideEvent, false)
+    window.onmousewheel = function(event) {
+      if (flag) {
+        //  防止多次滚轮滚动多个页面，保证在上个页面动画结束后，发生下一个页面
+        flag = false
+        slideEvent(event)
+        setTimeout(function() {
+          flag = true
+        }, BOX_CHANGE_TIME)
+      }
+    }
+    for (let i = 0; i < list.length; i++) {
+      list[i].addEventListener('click', function() {
+        index = i - 1
+        slideEvent(event)
+      })
+    }
+
+    function slideEvent(event) {
+      clearTimeout(timer) //不会一次滚动触发多次事件
+      timer = setTimeout(function() {
+        e = event || window.event
+        // IE、chrome监听的是wheelDelta,向下滚动其值为-120；向上滚动其值为120
+        if (e.wheelDelta) {
+          Delta = e.wheelDelta / 120
+          //火狐浏览器监听的是detail,向下滚动其值为3；向上滚动其值为-3
+        } else if (e.detail) {
+          Delta = -e.detail / 3 //取负数，以保证符号相同
+        }
+        if (Delta > 0) {
+          //向上
+          index = index === 0 ? 0 : --index
+        } else {
+          //向下
+          index = index === childLength - 1 ? childLength - 1 : ++index
+          if (index > 3) {
+            index = 3
+          }
+        }
+        for (let i = 0; i < childLength; i++) {
+          boxChild[i].style.top = (i - index) * 100 + '%'
+        }
+        for (let i = 0; i < libg.length; i++) {
+          libg[i].style.display = 'none'
+        }
+        libg[index].style.display = 'block'
+      }, 100)
+    }
+  </script>
+</html>

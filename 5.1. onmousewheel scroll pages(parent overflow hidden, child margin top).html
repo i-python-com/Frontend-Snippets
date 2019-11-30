@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      height: 100vh;
+    }
+    .wrapper-box {
+      height: 100vh;
+      overflow: hidden;
+    }
+    .wrapper {
+      width: 100%;
+      transition: all 0.5s;
+    }
+    ul > li {
+      height: 100vh;
+      width: 100%;
+    }
+    ul > li:nth-child(1) {
+      background: skyblue;
+    }
+    ul > li:nth-child(2) {
+      background: yellowgreen;
+    }
+    ul > li:nth-child(3) {
+      background: royalblue;
+    }
+    ul > li:nth-child(4) {
+      background: burlywood;
+    }
+    .dot {
+      position: fixed;
+      right: 50px;
+      top: 50%;
+    }
+    .dd-dot {
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+    <dl class="dot">
+      <dd class="dd-dot"></dd>
+      <dd class="dd-dot"></dd>
+      <dd class="dd-dot"></dd>
+      <dd class="dd-dot"></dd>
+    </dl>
+    <div class="wrapper-box">
+      <ul class="wrapper">
+        <li class="li-page"></li>
+        <li class="li-page"></li>
+        <li class="li-page"></li>
+        <li class="li-page"></li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    let box = document.getElementsByClassName('wrapper')[0]
+    let liChild = box.children
+    let liDot = document.getElementsByClassName('dd-dot')
+    let childLength = liChild.length
+    let index = 0,
+      timer,
+      Delta,
+      e,
+      flag = true
+    const BOX_CHANGE_TIME = 1000 //页面动画的过渡时间
+    if (window.addEventListener)
+      //FF,火狐浏览器会识别该方法
+      window.addEventListener('DOMMouseScroll', slideEvent, false)
+    window.onmousewheel = function(event) {
+      if (flag) {
+        //  防止多次滚轮滚动多个页面，保证在上个页面动画结束后，发生下一个页面
+        flag = false
+        slideEvent(event)
+        setTimeout(function() {
+          flag = true
+        }, BOX_CHANGE_TIME)
+      }
+    }
+    for (let i = 0; i < liDot.length; i++) {
+      liDot[i].addEventListener('click', function() {
+        index = i - 1
+        slideEvent(event)
+      })
+    }
+    function slideEvent(event) {
+      clearTimeout(timer) //不会一次滚动触发多次事件
+      timer = setTimeout(function() {
+        e = event || window.event
+        // IE、chrome监听的是wheelDelta,向下滚动其值为-120；向上滚动其值为120
+        if (e.wheelDelta) {
+          Delta = e.wheelDelta / 120
+          //火狐浏览器监听的是detail,向下滚动其值为3；向上滚动其值为-3
+        } else if (e.detail) {
+          Delta = -e.detail / 3 //取负数，以保证符号相同
+        }
+        if (Delta > 0) {
+          //向上
+          index = index === 0 ? 0 : --index
+        } else {
+          //向下
+          index = index === childLength - 1 ? childLength - 1 : ++index
+          if (index > 3) {
+            index = 3
+          }
+        }
+        box.style.marginTop = -index * 100 + 'vh'
+      }, 100)
+    }
+  </script>
+</html>
