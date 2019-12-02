@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="" />
+    <style>
+      *:focus {
+        outline: 0 !important;
+      }
+
+      .main-nav {
+        width: 100%;
+        height: 60px;
+        position: relative;
+        background-color: #333;
+      }
+
+      .main-nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-brand {
+        display: inline-block;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: bold;
+        line-height: 60px;
+      }
+      .nav-brand:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .hamburger {
+        position: relative;
+        border: none;
+        outline: none;
+        padding: 20px;
+        background: skyblue;
+        border-radius: 10%;
+        cursor: pointer;
+      }
+
+      .line {
+        width: 24px;
+        height: 3px;
+        position: absolute;
+        left: 8px;
+        background: #fff;
+        border-radius: 100px;
+        transition: all cubic-bezier(0.25, 0.1, 0.28, 1.54) 0.32s;
+      }
+
+      .line01 {
+        top: 26%;
+      }
+
+      .rd-close .line01 {
+        transform: rotate(45deg);
+        top: 49%;
+      }
+
+      .line02 {
+        top: 47%;
+      }
+
+      .rd-close .line02 {
+        transform: rotate(-45deg);
+        top: 49%;
+      }
+
+      .line03 {
+        top: 69%;
+      }
+
+      .rd-close .line03 {
+        transform: rotate(-45deg);
+        top: 49%;
+      }
+
+      @media screen and (max-width: 767.98px) {
+        .main-nav .nav-content {
+          display: none;
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        .hamburger {
+          display: none;
+        }
+        .mobile-nav {
+          display: none;
+        }
+        .main-nav .nav-content {
+          display: flex;
+          flex-grow: 1;
+          justify-content: flex-end;
+        }
+      }
+
+      .nav-ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .nav-ul-drop {
+        display: none;
+      }
+
+      .nav-li-link {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+      }
+
+      .nav-ul > li:hover > .nav-li-link {
+        background-color: yellowgreen;
+      }
+
+      .main-nav .nav-content > .nav-ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .main-nav .nav-ul > .nav-li .nav-li-link {
+        color: white;
+        text-decoration: none;
+        padding: 0 20px;
+      }
+
+      .main-nav .nav-li:hover > .nav-ul-drop {
+        display: block;
+        position: absolute;
+        min-width: 200px;
+        background-color: #333;
+      }
+
+      .mobile-nav {
+        position: absolute;
+        z-index: 999;
+        margin-left: -130vw;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        background: skyblue;
+        transition: all 0.2s;
+      }
+
+      .mobile-nav.show {
+        margin-left: 0;
+      }
+
+      .mobile-nav .container > .nav-ul {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mobile-nav .nav-ul > .nav-li .nav-li-link {
+        color: white;
+        text-decoration: none;
+        border-bottom: 1px solid #ccc;
+      }
+      .mobile-nav .nav-ul-drop.show {
+        display: flex;
+        flex-direction: column;
+        padding-left: 30px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <div class="main-nav">
+        <div class="container">
+          <a href="#" class="nav-brand">Company name</a>
+          <div class="nav-content">
+            <ul class="nav-ul">
+              <li class="nav-li"><a href="#" class="nav-li-link">Home</a></li>
+              <li class="nav-li">
+                <a href="#" class="nav-li-link"
+                  >Products <i class="fa fa-caret-down"></i
+                ></a>
+                <ul class="nav-ul nav-ul-drop">
+                  <li class="nav-li">
+                    <a href="" class="nav-li-link">Products1</a>
+                  </li>
+                  <li class="nav-li">
+                    <a href="" class="nav-li-link">Products2</a>
+                  </li>
+                  <li class="nav-li">
+                    <a href="" class="nav-li-link">Products3</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-li">
+                <a href="#" class="nav-li-link">Contact</a>
+              </li>
+              <li class="nav-li"><a href="#" class="nav-li-link">About</a></li>
+            </ul>
+          </div>
+          <button class="hamburger">
+            <span class="line line01"></span>
+            <span class="line line02"></span>
+            <span class="line line03"></span>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-nav">
+        <div class="container">
+          <ul class="nav-ul">
+            <li class="nav-li"><a href="#" class="nav-li-link">Home</a></li>
+            <li class="nav-li">
+              <a href="#" class="nav-li-link"
+                >Products <i class="fa fa-caret-down"></i
+              ></a>
+              <ul class="nav-ul nav-ul-drop">
+                <li class="nav-li">
+                  <a href="" class="nav-li-link">Products1</a>
+                </li>
+                <li class="nav-li">
+                  <a href="" class="nav-li-link">Products2</a>
+                </li>
+                <li class="nav-li">
+                  <a href="" class="nav-li-link">Products3</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-li"><a href="#" class="nav-li-link">Contact</a></li>
+            <li class="nav-li"><a href="#" class="nav-li-link">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src=""></script>
+    <script>
+      $(document).ready(function() {
+        $('.hamburger').on('click', function(e) {
+          $(this).toggleClass('rd-close')
+          $('.mobile-nav').toggleClass('show')
+        })
+        $('.mobile-nav .nav-li-link').on('click', function(e) {
+          $(this)
+            .next()
+            .toggleClass('show')
+        })
+      })
+    </script>
+  </body>
+</html>
