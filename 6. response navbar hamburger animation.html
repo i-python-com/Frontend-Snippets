@@ -282,10 +282,15 @@
           $(this).toggleClass('rd-close')
           $('.mobile-nav').toggleClass('show')
         })
-        $('.mobile-nav .nav-li-link').on('click', function(e) {
-          $(this)
-            .next()
-            .toggleClass('show')
+        $('.mobile-nav .nav-li').on('click', function(e) {
+          if ($(this).hasClass('nav-li-drop')) {
+            $(this)
+              .find('.nav-ul-drop')
+              .toggleClass('show')
+          } else {
+            $('.hamburger').toggleClass('rd-close')
+            $('.mobile-nav').toggleClass('show')
+          }
         })
       })
     </script>
